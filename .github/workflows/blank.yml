@@ -191,15 +191,4 @@ jobs:
           $body = @{ ref = $env:REF; inputs = @{ instance_number = $inst } } | ConvertTo-Json -Compress
           Invoke-RestMethod -Method Post -Uri "https://api.github.com/repos/${{ github.repository }}/actions/workflows/blank.yml/dispatches" -Headers @{ Authorization = "Bearer $env:PAT"; Accept = "application/vnd.github+json" } -Body $body -ContentType "application/json"
           Write-Host "Proxima execucao chamada! Reconecte em ~2 minutos." -ForegroundColor Green
-      - name: Chamar a proxima execucao sozinho
-        if: always()
-        continue-on-error: true
-        env:
-          PAT: ${{ secrets.PAT_REINICIO }}
-          REF: ${{ github.ref_name }}
-          INST: ${{ github.event.inputs.instance_number }}
-        run: |
-          $inst = if ($env:INST) { $env:INST } else { "1" }
-          $body = @{ ref = $env:REF; inputs = @{ instance_number = $inst } } | ConvertTo-Json -Compress
-          Invoke-RestMethod -Method Post -Uri "https://api.github.com/repos/${{ github.repository }}/actions/workflows/blank.yml/dispatches" -Headers @{ Authorization = "Bearer $env:PAT"; Accept = "application/vnd.github+json" } -Body $body -ContentType "application/json"
-          Write-Host "Proxima execucao chamada! Reconecte em ~2 minutos." -ForegroundColor Green
+          
